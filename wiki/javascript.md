@@ -1,4 +1,5 @@
-# javascript 编码规范
+# javascript 编码规范 【待修订】
+> 参考百度FEF  规范 
 
 1 [前言](#前言)
 
@@ -122,15 +123,15 @@
 ### 2.3 命名规则
 
 - 2.3.1 项目命名    
-   全部采用小写方式， 以中划线`-`分隔。   
-   列: `vue-ionic`丶 `mkt-label`   
+   全部采用小写方式， 以下划线`_`分隔。   
+   列: `vue_ionic`丶 `mkt_label`   
 - 2.3.2 目录命名
    全部采用小写方式，以`.` 分隔  
    有复数结构时，要采用复数命名法。  
    列： `src`,`assets`,`services`,`hello.word`
 - 2.3.3 js文件命名
    参考目录命令   
-   具体有意义的文件时需要带具体的后缀 如`.config.js`,`.service.js`,`.controller.js`,'.spec.js'   
+   具体有意义的文件时需要带具体的后缀 如`.config.js`,`.service.js`,`.controller.js`,`.spec.js`   
    列： `bootstrap.js`,`hello.config.js`,`router.config.js`,'user.service.js'
 - 2.3.4 变量命名
   - [强制]标准采用驼峰式命名 （除了对象的属性外，主要是考虑到后端返回的数据）  
@@ -187,7 +188,7 @@ let hasMoreCommands = false;
 ```
 
 - 2.3.5 变量声明
-  - 一个函数作用域中所有的变量声明尽量提到函数首部，用一个var声明，不允许出现两个连续的var声明。 
+   一个函数作用域中所有的变量声明尽量提到函数首部，用一个var声明，不允许出现两个连续的var声明。 
 - 2.3.6 函数/方法/类 命名
 - [强制] 类的 方法 / 属性 使用 驼峰命名法
 
@@ -202,7 +203,7 @@ let hasMoreCommands = false;
   ```   
  - [强制] 由多个单词组成的缩写词，在命名中，根据当前命名法和出现的位置，所有字母的大小写与首字母的大小写保持一致。   
  - 强制] 类的 方法 / 属性 使用 Camel命名法。 
- - 参数之间用', '分隔，注意逗号后有一个空格。   
+ - 参数之间用`, `分隔，注意逗号后有一个空格。   
   ```javascript 
   class UIConfig {
       XMLParser() {
@@ -217,7 +218,7 @@ let hasMoreCommands = false;
  ``` 
 
  - [强制] 类名 使用 名词。 
- ```javascript 
+ ``` javascript 
  class Engine {
 
  }
@@ -687,9 +688,9 @@ const foo = document.querySelectorAll('.foo');
 const nodes = Array.from(foo);
 ```
 
-### 3.3 解构  
+### 3.4 解构  
 - [强制] 不要使用3层及以上的解构。
->  过多层次的解构会让代码变得难以阅读。 
+> 过多层次的解构会让代码变得难以阅读。 
 - 使用解构存取和使用多属性对象。
 > 因为解构能减少临时引用属性。  
 
@@ -798,3 +799,577 @@ let [,,, ...other] = myArray;
 ``` 
 
 
+### 3.5 字符串模板
+
+- [强制] 字符串内变量替换时，不要使用 2 次及以上的函数调用。  
+>  在变量替换符内有太多的函数调用等复杂语法会导致可读性下降。
+``` javascript
+// good
+let fullName = getFullName(getFirstName(), getLastName());
+let s = `Hello ${fullName}`;
+
+// bad
+let s = `Hello ${getFullName(getFirstName(), getLastName())}`;
+``` 
+ 
+
+
+-  字符串使用单引号 ''  
+``` javascript
+ // bad
+const name = "Capt. Janeway";
+
+// good
+const name = 'Capt. Janeway';
+``` 
+
+- 字符串超过 80 个字节应该使用字符串连接号换行。  
+
+- 注：过度使用字串连接符号可能会对性能造成影响。jsPerf 和 讨论.  
+
+```javascript   
+// bad
+const errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.';
+
+// bad
+const errorMessage = 'This is a super long error that was thrown because \
+of Batman. When you stop to think about how Batman had anything to do \
+with this, you would get nowhere \
+fast.';
+
+// good  这会不会用数组会更好一点
+const errorMessage = 'This is a super long error that was thrown because ' +
+  'of Batman. When you stop to think about how Batman had anything to do ' +
+  'with this, you would get nowhere fast.';
+```  
+
+- 程序化生成字符串时，使用模板字符串代替字符串连接。  
+>  模板字符串更为简洁，更具可读性。 
+```javascript  
+  // bad
+  function sayHi(name) {
+    return 'How are you, ' + name + '?';
+  }
+
+  // bad
+  function sayHi(name) {
+    return ['How are you, ', name, '?'].join();
+  }
+
+  // good
+  function sayHi(name) {
+    return `How are you, ${name}?`;
+  }
+```
+
+### 3.6 函数
+
+- [建议] 使用变量默认语法代替基于条件判断的默认值声明。
+> 添加默认值有助于引擎的优化，在未来 strong mode 下也会有更好的效果。
+```javascript  
+// good
+function foo(text = 'hello') {
+}
+
+// bad
+function foo(text) {
+    text = text || 'hello';
+}
+```
+
+- [强制] 不要使用 arguments 对象，应使用 ...args 代替。
+> 使用 ... 能明确你要传入的参数。另外 rest 参数是一个真正的数组，而 arguments 是一个类数组。
+
+```javascript  
+// good
+function foo(...args) {
+    console.log(args.join(''));
+}
+
+// bad
+function foo() {
+    console.log([].join.call(arguments));
+}
+```
+
+- 使用函数声明代替函数表达式。    
+> 函数声明是可命名的，所以他们在调用栈中更容易被识别。此外，函数声明会把整个函数提升（hoisted），而函数表达式只会把函数的引用变量名提升。这条规则使得箭头函数可以取代函数表达式。  
+
+```javascript 
+// bad
+const foo = function () {
+};
+
+// good
+function foo() {
+} 
+```
+
+- 永远不要在一个非函数代码块（if、while 等）中声明一个函数，把那个函数赋给一个变量。浏览器允许你这么做，但它们的解析表现不一致。  
+
+- 永远不要把参数命名为 arguments。这将取代原来函数作用域内的 arguments 对象。  
+```javascript 
+// bad
+function nope(name, options, arguments) {
+  // ...stuff...
+}
+
+// good
+function yup(name, options, args) {
+  // ...stuff...
+} 
+```
+
+- 直接给函数参数赋值时需要避免副作用。
+> 这样的写法让人感到很困惑。
+```javascript 
+var b = 1;
+// bad
+function count(a = b++) {
+  console.log(a);
+}
+count();  // 1
+count();  // 2
+count(3); // 3
+count();  // 3 
+```
+
+### 3.7 箭头函数
+
+-  当你必须使用函数表达式（或传递一个匿名函数）时，使用箭头函数符号。   
+>  箭头函数创造了新的一个 this 执行环境（译注：参考 Arrow functions – JavaScript | MDN 和 ES6 arrow functions, syntax and lexical scoping），通常情况下都能满足你的需求，而且这样的写法更为简洁。
+> 如果你有一个相当复杂的函数，你或许可以把逻辑部分转移到一个函数声明上。   
+
+```javascript 
+  // bad
+  [1, 2, 3].map(function (x) {
+    return x * x;
+  });
+
+  // good
+  [1, 2, 3].map((x) => {
+    return x * x;
+  });
+```
+
+- 如果一个函数适合用一行写出并且只有一个参数，那就把花括号、圆括号和 return 都省略掉。如果不是，那就不要省略。   
+
+```javascript
+  // good
+  [1, 2, 3].map(x => x * x);
+
+  // good
+  [1, 2, 3].reduce((total, n) => {
+    return total + n;
+  }, 0);
+```
+- [强制] 一个函数被设计为需要 `call` 和 `apply` 的时候，不能是箭头函数。 
+> 箭头函数会强制绑定当前环境下的 this。
+
+
+### 3.8 构造器
+
+- 总是使用 `class`。避免直接操作 prototype 。  
+>   `class` 语法更为简洁更易读。 
+
+```javascript
+  // bad
+  function Queue(contents = []) {
+    this._queue = [...contents];
+  }
+  Queue.prototype.pop = function() {
+    const value = this._queue[0];
+    this._queue.splice(0, 1);
+    return value;
+  }
+
+
+  // good
+  class Queue {
+    constructor(contents = []) {
+      this._queue = [...contents];
+    }
+    pop() {
+      const value = this._queue[0];
+      this._queue.splice(0, 1);
+      return value;
+    }
+  }
+```
+
+- 使用 `extends` 继承。
+> `extends` 是一个内建的原型继承方法并且不会破坏 `instanceof`。
+
+```javascript  
+  // bad
+  const inherits = require('inherits');
+  function PeekableQueue(contents) {
+    Queue.apply(this, contents);
+  }
+  inherits(PeekableQueue, Queue);
+  PeekableQueue.prototype.peek = function() {
+    return this._queue[0];
+  }
+
+  // good
+  class PeekableQueue extends Queue {
+    peek() {
+      return this._queue[0];
+    }
+  }
+```
+
+- 使用 super 访问父类成员，而非父类的 prototype。
+> 使用 super 和 super.foo 可以快速访问父类成员，而不必硬编码父类模块而导致修改和维护的不便，同时更节省代码。 
+
+```javascript 
+ // good
+class TextNode extends Node {
+    constructor(value, engine) {
+        super(value);
+        this.engine = engine;
+    }
+
+    setNodeValue(value) {
+        super.setNodeValue(value);
+        this.textContent = value;
+    }
+}
+
+// bad
+class TextNode extends Node {
+    constructor(value, engine) {
+        Node.apply(this, arguments);
+        this.engine = engine;
+    }
+
+    setNodeValue(value) {
+        Node.prototype.setNodeValue.call(this, value);
+        this.textContent = value;
+    }
+}
+```
+
+- 方法可以返回 this 来帮助链式调用。
+
+```javascript  
+// bad
+Jedi.prototype.jump = function() {
+  this.jumping = true;
+  return true;
+};
+
+Jedi.prototype.setHeight = function(height) {
+  this.height = height;
+};
+
+const luke = new Jedi();
+luke.jump(); // => true
+luke.setHeight(20); // => undefined
+
+// good
+class Jedi {
+  jump() {
+    this.jumping = true;
+    return this;
+  }
+
+  setHeight(height) {
+    this.height = height;
+    return this;
+  }
+}
+
+const luke = new Jedi();
+
+luke.jump()
+  .setHeight(20);
+
+```
+
+3.9 模块
+
+- export 与内容定义放在一起。
+> 何处声明要导出的东西，就在何处使用 export 关键字，不在声明后再统一导出。
+
+```javascript 
+// good
+export function foo() {
+}
+
+export const bar = 3;
+
+
+// bad
+function foo() {
+}
+
+const bar = 3;
+
+export {foo};
+export {bar};
+```
+
+- 相互之间无关联的内容使用命名导出 
+> 举个例子，工具对象中的各个方法，相互之间并没有强关联，通常外部会选择几个使用，则应该使用命名导出。
+简而言之，当一个模块只扮演命名空间的作用时，使用命名导出。
+- 所有 import 语句写在模块开始处
+```javascript 
+// good
+import {bar} from './bar';
+
+function foo() {
+    bar.work();
+}
+
+// bad
+function foo() {
+    import {bar} from './bar';
+    bar.work();
+}
+```
+
+- 不要从 import 中直接 export
+> 虽然一行代码简洁明了，但让 import 和 export 各司其职让事情能保持一致。
+
+```javascript  
+  // bad
+  // filename es6.js
+  export { es6 as default } from './airbnbStyleGuide';
+
+  // good
+  // filename es6.js
+  import { es6 } from './AirbnbStyleGuide';
+  export default es6;
+```
+
+3.10 对象
+
+- 定义对象时，如果所有键均指向同名变量，则所有键都使用缩写；如果有一个键无法指向同名变量，则所有键都不使用缩写。
+> 目的在于保持所有键值对声明的一致性。
+
+```javascript  
+ // good
+let foo = {x, y, z};
+
+let foo2 = {
+    x: 1,
+    y: 2,
+    z: z
+};
+
+
+// bad
+let foo = {
+    x: x,
+    y: y,
+    z: z
+};
+
+let foo2 = {
+    x: 1,
+    y: 2,
+    z
+};
+```
+
+- 定义方法时使用 MethodDefinition 语法，不使用 PropertyName: FunctionExpression 语法。
+> MethodDefinition 语法更清晰简洁。
+
+```javascript  
+ // good
+let foo = {
+    bar(x, y) {
+        return x + y;
+    }
+};
+
+// bad
+let foo = {
+    bar: function (x, y) {
+        return x + y;
+    }
+};
+```
+
+- 使用 Object.keys 或 Object.entries 进行对象遍历
+> 不建议使用 for .. in 进行对象的遍历，以避免遗漏 hasOwnProperty 产生的错误。
+
+``` javascript 
+// good
+for (let key of Object.keys(foo)) {
+    let value = foo[key];
+}
+
+// good
+for (let [key, value] of Object.entries(foo)) {
+    // ...
+}
+```
+
+- 定义对象的方法不应使用箭头函数。
+> 箭头函数将 this 绑定到当前环境，在 obj.method() 调用时容易导致不期待的 this。除非明确需要绑定 this，否则不应使用箭头函数。  
+
+
+``` javascript 
+// good
+let foo = {
+    bar(x, y) {
+        return x + y;
+    }
+};
+
+// bad
+let foo = {
+    bar: (x, y) => x + y
+};
+```
+
+- 尽量使用计算属性键在一个完整的字面量中完整地定义一个对象，避免对象定义后直接增加对象属性  
+> 在一个完整的字面量中声明所有的键值，而不需要将代码分散开来，有助于提升代码可读性
+
+``` javascript 
+// good
+const MY_KEY = 'bar';
+let foo = {
+    [MY_KEY + 'Hash']: 123
+};
+
+// bad
+const MY_KEY = 'bar';
+let foo = {};
+foo[MY_KEY + 'Hash'] = 123;
+```
+
+### 3.11 集合
+
+- 对数组进行连接操作时，使用数组展开语法
+> 用数组展开代替 concat 方法，数组展开对 Iterable 有更好的兼容性。
+
+``` javascript 
+// good
+let foo = [...foo, newValue];
+let bar = [...bar, ...newValues];
+
+// bad
+let foo = foo.concat(newValue);
+let bar = bar.concat(newValues);
+```
+
+- 不要使用数组展开进行数组的复制操作。
+> 使用数组展开语法进行复制，代码可读性较差。推荐使用 Array.from 方法进行复制操作。
+
+``` javascript 
+// good
+let otherArr = Array.from(arr);
+
+// bad
+let otherArr = [...arr];
+```
+
+- 需要一个不可重复的集合时，应使用 Set。
+> 不要使用 {foo: true} 这样的普通 Object。
+
+```javascript   
+// good
+let members = new Set(['one', 'two', 'three']);
+
+// bad
+let members = {
+    one: true,
+    two: true,
+    three: true
+};
+```
+
+- 当需要遍历功能时，使用 Map 和 Set。
+> Map 和 Set 是可遍历对象，能够方便地使用 for...of 遍历。不要使用使用普通 Object 
+``` javascript  
+// good
+let membersAge = new Map([
+    ['one', 10],
+    ['two', 20],
+    ['three', 30]
+]);
+for (let [key, value] of map) {
+}
+
+// bad
+let membersAge = {
+    one: 10,
+    two: 20,
+    three: 30
+};
+for (let key in membersAge) {
+    if (membersAge.hasOwnProperty(key)) {
+        let value = membersAge[key];
+    }
+}
+```
+
+- 程序运行过程中有添加或移除元素的操作时，使用 Map 和 Set。
+> 使用 Map 和 Set，程序的可理解性更好；普通 Object 的语义更倾向于表达固定的结构。
+
+```javascript  
+// good
+let membersAge = new Map();
+membersAge.set('one', 10);
+membersAge.set('two', 20);
+membersAge.set('three', 30);
+membersAge.delete('one');
+
+// bad
+let membersAge = {};
+membersAge.one = 10;
+membersAge.two = 20;
+membersAge.three = 30;
+delete membersAge['one'];
+```
+
+11 异步  
+
+- 回调函数的嵌套不得超过3层。
+> 深层次的回调函数的嵌套会让代码变得难以阅读。  
+
+```javascript 
+// bad
+getUser(userId, function (user) {
+    validateUser(user, function (isValid) {
+        if (isValid) {
+            saveReport(report, user, function () {
+                notice('Saved!');
+            });
+        }
+    });
+});
+```
+
+- 使用 Promise 代替 callback
+> 相比 callback，使用 Promise 能够使复杂异步过程的代码更清晰
+
+```javascript  
+// good
+let user;
+getUser(userId)
+    .then(function (userObj) {
+        user = userObj;
+        return validateUser(user);
+    })
+    .then(function (isValid) {
+        if (isValid) {
+            return saveReport(report, user);
+        }
+
+        return Promise.reject('Invalid!');
+    })
+    .then(
+        function () {
+            notice('Saved!');
+        },
+        function (message) {
+            notice(message);
+        }
+    );
+```
+
+- 使用 async/await 代替 generator + co  【Koa 2】
