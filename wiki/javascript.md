@@ -228,54 +228,55 @@ let hasMoreCommands = false;
 
  ```javascript 
  function stringFormat(source) {
-}
+ }
 
-function hear(theBells) {
-}
+ function hear(theBells) {
+ }
 
  ``` 
 
  - [建议] 函数的 事件的使用 on 开始命名 
-```javascript
-class Engine {
-    onSave(){
+ 
+  ```javascript
+	class Engine {
+	    onSave(){
 
-    }
- }
-```
+	    }
+      }
+  ```
 
-- [建议] 服务类 方法 遵循 
+- [建议] 服务类 方法 遵循  
   - `get` 获取单条
   - `getByID` 根据 xx 获取
   - `getList` 获取列表 
-  - `exportXX` 下载 下载xx(exportUser)
-  - `getXX` 获取xx
+  - `exportXX` 下载 下载xx(exportUser) 
+  - `getXX` 获取xx   
+ 
+	``` javascript
+	class EngineService {
+	    onSave(){
+		get(){
 
-```javascript
-class EngineService {
-    onSave(){
-        get(){
+		}
 
-        }
+		getList(){
 
-        getList(){
+		}
 
-        }
+		getByID(){
 
-        getByID(){
+		}
 
-        }
+		exportUser(){
 
-        exportUser(){
+		}
 
-        }
+		getAids(){
 
-        getAids(){
-            
-        }
-    }
- }
-```
+		}
+	    }
+	 }
+	```
 
 - [建议] 初始化 方法定义遵循 xxInit() 
 ```javascript
@@ -689,10 +690,10 @@ const nodes = Array.from(foo);
 ```
 
 ### 3.4 解构  
-- [强制] 不要使用3层及以上的解构。
-> 过多层次的解构会让代码变得难以阅读。 
-- 使用解构存取和使用多属性对象。
-> 因为解构能减少临时引用属性。  
+- [强制] 不要使用3层及以上的解构。      
+>  过多层次的解构会让代码变得难以阅读。    
+- 使用解构存取和使用多属性对象。       
+>  因为解构能减少临时引用属性。     
 
 ``` javascript
   // bad
@@ -715,8 +716,8 @@ const nodes = Array.from(foo);
   }
 ``` 
 
-- [建议] 使用解构减少中间变量。
-> 常见场景如变量值交换，可能产生中间变量。这种场景推荐使用解构。  
+- [建议] 使用解构减少中间变量。 
+>  常见场景如变量值交换，可能产生中间变量。这种场景推荐使用解构。  
 
 ``` javascript
   // good
@@ -741,8 +742,8 @@ const second = arr[1];
 const [first, second] = arr;
 ``` 
 
-- 需要回传多个值时，使用对象解构，而不是数组解构。
-> 增加属性或者改变排序不会改变调用时的位置。  
+- 需要回传多个值时，使用对象解构，而不是数组解构。   
+>  增加属性或者改变排序不会改变调用时的位置。  
 
 ``` javascript
  // bad
@@ -764,8 +765,8 @@ const [first, second] = arr;
   const { left, right } = processInput(input);
 ``` 
 
-- [强制] 仅定义一个变量时不允许使用解构。
-> 在这种场景下，使用解构将降低代码可读性。 
+- [强制] 仅定义一个变量时不允许使用解构。  
+>  在这种场景下，使用解构将降低代码可读性。 
 
 ``` javascript
  // good
@@ -775,8 +776,8 @@ let len = myString.length;
 let {length: len} = myString;
 ``` 
 
-- [强制] 如果不节省编写时产生的中间变量，解构表达式 = 号右边不允许是 ObjectLiteral 和 ArrayLiteral。   
->  在这种场景下，使用解构将降低代码可读性，通常也并无收益。 
+- [强制] 如果不节省编写时产生的中间变量，解构表达式 = 号右边不允许是 ObjectLiteral 和 ArrayLiteral。      
+>   在这种场景下，使用解构将降低代码可读性，通常也并无收益。 
 ``` javascript
  // good
 let {first: firstName, last: lastName} = person;
@@ -787,8 +788,8 @@ let two = 2;
 let [one, two] = [1, 2];
 ``` 
 
-- [强制] 使用剩余运算符时，剩余运算符之前的所有元素必需具名。  
->  剩余运算符之前的元素省略名称可能带来较大的程序阅读障碍。如果仅仅为了取数组后几项，请使用 slice 方法。   
+- [强制] 使用剩余运算符时，剩余运算符之前的所有元素必需具名。     
+>   剩余运算符之前的元素省略名称可能带来较大的程序阅读障碍。如果仅仅为了取数组后几项，请使用 slice 方法。     
 ``` javascript
  // good
 let [one, two, ...anyOther] = myArray;
@@ -801,8 +802,8 @@ let [,,, ...other] = myArray;
 
 ### 3.5 字符串模板
 
-- [强制] 字符串内变量替换时，不要使用 2 次及以上的函数调用。  
->  在变量替换符内有太多的函数调用等复杂语法会导致可读性下降。
+- [强制] 字符串内变量替换时，不要使用 2 次及以上的函数调用。     
+>  在变量替换符内有太多的函数调用等复杂语法会导致可读性下降。 
 ``` javascript
 // good
 let fullName = getFullName(getFirstName(), getLastName());
@@ -843,8 +844,8 @@ const errorMessage = 'This is a super long error that was thrown because ' +
   'with this, you would get nowhere fast.';
 ```  
 
-- 程序化生成字符串时，使用模板字符串代替字符串连接。  
->  模板字符串更为简洁，更具可读性。 
+- 程序化生成字符串时，使用模板字符串代替字符串连接。    
+>   模板字符串更为简洁，更具可读性。 
 ```javascript  
   // bad
   function sayHi(name) {
@@ -864,8 +865,8 @@ const errorMessage = 'This is a super long error that was thrown because ' +
 
 ### 3.6 函数
 
-- [建议] 使用变量默认语法代替基于条件判断的默认值声明。
-> 添加默认值有助于引擎的优化，在未来 strong mode 下也会有更好的效果。
+- [建议] 使用变量默认语法代替基于条件判断的默认值声明。  
+>  添加默认值有助于引擎的优化，在未来 strong mode 下也会有更好的效果。  
 ```javascript  
 // good
 function foo(text = 'hello') {
@@ -877,8 +878,8 @@ function foo(text) {
 }
 ```
 
-- [强制] 不要使用 arguments 对象，应使用 ...args 代替。
-> 使用 ... 能明确你要传入的参数。另外 rest 参数是一个真正的数组，而 arguments 是一个类数组。
+- [强制] 不要使用 arguments 对象，应使用 ...args 代替。  
+>  使用 ... 能明确你要传入的参数。另外 rest 参数是一个真正的数组，而 arguments 是一个类数组。 
 
 ```javascript  
 // good
@@ -892,8 +893,8 @@ function foo() {
 }
 ```
 
-- 使用函数声明代替函数表达式。    
-> 函数声明是可命名的，所以他们在调用栈中更容易被识别。此外，函数声明会把整个函数提升（hoisted），而函数表达式只会把函数的引用变量名提升。这条规则使得箭头函数可以取代函数表达式。  
+- 使用函数声明代替函数表达式。          
+>  函数声明是可命名的，所以他们在调用栈中更容易被识别。此外，函数声明会把整个函数提升（hoisted），而函数表达式只会把函数的引用变量名提升。这条规则使得箭头函数可以取代函数表达式。  
 
 ```javascript 
 // bad
@@ -920,8 +921,8 @@ function yup(name, options, args) {
 } 
 ```
 
-- 直接给函数参数赋值时需要避免副作用。
-> 这样的写法让人感到很困惑。
+- 直接给函数参数赋值时需要避免副作用。  
+>  这样的写法让人感到很困惑。
 ```javascript 
 var b = 1;
 // bad
@@ -936,9 +937,9 @@ count();  // 3
 
 ### 3.7 箭头函数
 
--  当你必须使用函数表达式（或传递一个匿名函数）时，使用箭头函数符号。   
->  箭头函数创造了新的一个 this 执行环境（译注：参考 Arrow functions – JavaScript | MDN 和 ES6 arrow functions, syntax and lexical scoping），通常情况下都能满足你的需求，而且这样的写法更为简洁。
-> 如果你有一个相当复杂的函数，你或许可以把逻辑部分转移到一个函数声明上。   
+-  当你必须使用函数表达式（或传递一个匿名函数）时，使用箭头函数符号。     
+>   箭头函数创造了新的一个 this 执行环境（译注：参考 Arrow functions – JavaScript | MDN 和 ES6 arrow functions, syntax and lexical scoping），通常情况下都能满足你的需求，而且这样的写法更为简洁。
+>  如果你有一个相当复杂的函数，你或许可以把逻辑部分转移到一个函数声明上。   
 
 ```javascript 
   // bad
@@ -963,8 +964,8 @@ count();  // 3
     return total + n;
   }, 0);
 ```
-- [强制] 一个函数被设计为需要 `call` 和 `apply` 的时候，不能是箭头函数。 
-> 箭头函数会强制绑定当前环境下的 this。
+- [强制] 一个函数被设计为需要 `call` 和 `apply` 的时候，不能是箭头函数。  
+>  箭头函数会强制绑定当前环境下的 this。
 
 
 ### 3.8 构造器
@@ -997,8 +998,8 @@ count();  // 3
   }
 ```
 
-- 使用 `extends` 继承。
-> `extends` 是一个内建的原型继承方法并且不会破坏 `instanceof`。
+- 使用 `extends` 继承。 
+>  `extends` 是一个内建的原型继承方法并且不会破坏 `instanceof`。
 
 ```javascript  
   // bad
@@ -1019,8 +1020,8 @@ count();  // 3
   }
 ```
 
-- 使用 super 访问父类成员，而非父类的 prototype。
-> 使用 super 和 super.foo 可以快速访问父类成员，而不必硬编码父类模块而导致修改和维护的不便，同时更节省代码。 
+- 使用 super 访问父类成员，而非父类的 prototype。 
+>  使用 super 和 super.foo 可以快速访问父类成员，而不必硬编码父类模块而导致修改和维护的不便，同时更节省代码。 
 
 ```javascript 
  // good
@@ -1089,8 +1090,8 @@ luke.jump()
 
 3.9 模块
 
-- export 与内容定义放在一起。
-> 何处声明要导出的东西，就在何处使用 export 关键字，不在声明后再统一导出。
+- export 与内容定义放在一起。  
+>  何处声明要导出的东西，就在何处使用 export 关键字，不在声明后再统一导出。
 
 ```javascript 
 // good
@@ -1110,10 +1111,10 @@ export {foo};
 export {bar};
 ```
 
-- 相互之间无关联的内容使用命名导出 
-> 举个例子，工具对象中的各个方法，相互之间并没有强关联，通常外部会选择几个使用，则应该使用命名导出。
+- 相互之间无关联的内容使用命名导出     
+>   举个例子，工具对象中的各个方法，相互之间并没有强关联，通常外部会选择几个使用，则应该使用命名导出。
 简而言之，当一个模块只扮演命名空间的作用时，使用命名导出。
-- 所有 import 语句写在模块开始处
+-  所有 import 语句写在模块开始处
 ```javascript 
 // good
 import {bar} from './bar';
@@ -1129,8 +1130,8 @@ function foo() {
 }
 ```
 
-- 不要从 import 中直接 export
-> 虽然一行代码简洁明了，但让 import 和 export 各司其职让事情能保持一致。
+- 不要从 import 中直接 export   
+>  虽然一行代码简洁明了，但让 import 和 export 各司其职让事情能保持一致。
 
 ```javascript  
   // bad
@@ -1145,8 +1146,8 @@ function foo() {
 
 3.10 对象
 
-- 定义对象时，如果所有键均指向同名变量，则所有键都使用缩写；如果有一个键无法指向同名变量，则所有键都不使用缩写。
-> 目的在于保持所有键值对声明的一致性。
+- 定义对象时，如果所有键均指向同名变量，则所有键都使用缩写；如果有一个键无法指向同名变量，则所有键都不使用缩写。  
+>  目的在于保持所有键值对声明的一致性。
 
 ```javascript  
  // good
@@ -1173,8 +1174,8 @@ let foo2 = {
 };
 ```
 
-- 定义方法时使用 MethodDefinition 语法，不使用 PropertyName: FunctionExpression 语法。
-> MethodDefinition 语法更清晰简洁。
+- 定义方法时使用 MethodDefinition 语法，不使用 PropertyName: FunctionExpression 语法。  
+>  MethodDefinition 语法更清晰简洁。
 
 ```javascript  
  // good
@@ -1192,8 +1193,8 @@ let foo = {
 };
 ```
 
-- 使用 Object.keys 或 Object.entries 进行对象遍历
-> 不建议使用 for .. in 进行对象的遍历，以避免遗漏 hasOwnProperty 产生的错误。
+- 使用 Object.keys 或 Object.entries 进行对象遍历  
+>  不建议使用 for .. in 进行对象的遍历，以避免遗漏 hasOwnProperty 产生的错误。  
 
 ``` javascript 
 // good
@@ -1207,8 +1208,8 @@ for (let [key, value] of Object.entries(foo)) {
 }
 ```
 
-- 定义对象的方法不应使用箭头函数。
-> 箭头函数将 this 绑定到当前环境，在 obj.method() 调用时容易导致不期待的 this。除非明确需要绑定 this，否则不应使用箭头函数。  
+- 定义对象的方法不应使用箭头函数。  
+>  箭头函数将 this 绑定到当前环境，在 obj.method() 调用时容易导致不期待的 this。除非明确需要绑定 this，否则不应使用箭头函数。  
 
 
 ``` javascript 
@@ -1225,8 +1226,8 @@ let foo = {
 };
 ```
 
-- 尽量使用计算属性键在一个完整的字面量中完整地定义一个对象，避免对象定义后直接增加对象属性  
-> 在一个完整的字面量中声明所有的键值，而不需要将代码分散开来，有助于提升代码可读性
+- 尽量使用计算属性键在一个完整的字面量中完整地定义一个对象，避免对象定义后直接增加对象属性    
+>  在一个完整的字面量中声明所有的键值，而不需要将代码分散开来，有助于提升代码可读性
 
 ``` javascript 
 // good
@@ -1243,8 +1244,8 @@ foo[MY_KEY + 'Hash'] = 123;
 
 ### 3.11 集合
 
-- 对数组进行连接操作时，使用数组展开语法
-> 用数组展开代替 concat 方法，数组展开对 Iterable 有更好的兼容性。
+- 对数组进行连接操作时，使用数组展开语法  
+>  用数组展开代替 concat 方法，数组展开对 Iterable 有更好的兼容性。
 
 ``` javascript 
 // good
@@ -1256,8 +1257,8 @@ let foo = foo.concat(newValue);
 let bar = bar.concat(newValues);
 ```
 
-- 不要使用数组展开进行数组的复制操作。
-> 使用数组展开语法进行复制，代码可读性较差。推荐使用 Array.from 方法进行复制操作。
+- 不要使用数组展开进行数组的复制操作。  
+>  使用数组展开语法进行复制，代码可读性较差。推荐使用 Array.from 方法进行复制操作。
 
 ``` javascript 
 // good
@@ -1267,8 +1268,8 @@ let otherArr = Array.from(arr);
 let otherArr = [...arr];
 ```
 
-- 需要一个不可重复的集合时，应使用 Set。
-> 不要使用 {foo: true} 这样的普通 Object。
+- 需要一个不可重复的集合时，应使用 Set。     
+>  不要使用 {foo: true} 这样的普通 Object。
 
 ```javascript   
 // good
@@ -1282,8 +1283,8 @@ let members = {
 };
 ```
 
-- 当需要遍历功能时，使用 Map 和 Set。
-> Map 和 Set 是可遍历对象，能够方便地使用 for...of 遍历。不要使用使用普通 Object 
+- 当需要遍历功能时，使用 Map 和 Set。   
+>  Map 和 Set 是可遍历对象，能够方便地使用 for...of 遍历。不要使用使用普通 Object 
 ``` javascript  
 // good
 let membersAge = new Map([
@@ -1307,8 +1308,8 @@ for (let key in membersAge) {
 }
 ```
 
-- 程序运行过程中有添加或移除元素的操作时，使用 Map 和 Set。
-> 使用 Map 和 Set，程序的可理解性更好；普通 Object 的语义更倾向于表达固定的结构。
+- 程序运行过程中有添加或移除元素的操作时，使用 Map 和 Set。  
+>  使用 Map 和 Set，程序的可理解性更好；普通 Object 的语义更倾向于表达固定的结构。
 
 ```javascript  
 // good
@@ -1328,8 +1329,8 @@ delete membersAge['one'];
 
 11 异步  
 
-- 回调函数的嵌套不得超过3层。
-> 深层次的回调函数的嵌套会让代码变得难以阅读。  
+- 回调函数的嵌套不得超过3层。   
+>  深层次的回调函数的嵌套会让代码变得难以阅读。  
 
 ```javascript 
 // bad
@@ -1344,8 +1345,8 @@ getUser(userId, function (user) {
 });
 ```
 
-- 使用 Promise 代替 callback
-> 相比 callback，使用 Promise 能够使复杂异步过程的代码更清晰
+- 使用 Promise 代替 callback   
+>  相比 callback，使用 Promise 能够使复杂异步过程的代码更清晰
 
 ```javascript  
 // good
@@ -1372,4 +1373,4 @@ getUser(userId)
     );
 ```
 
-- 使用 async/await 代替 generator + co  【Koa 2】
+- 使用 async/await 代替 generator + co  【Koa 2】 
