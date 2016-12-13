@@ -5,7 +5,7 @@
 ## [1. javascript编码规范](https://github.com/rrcMktFE/spec/blob/master/wiki/javascript.md)
 
 
-## [2 scss编码规范]()
+## [2 scss编码规范](https://github.com/rrcMktFE/spec/blob/master/wiki/scss.md)
 
 
 ## [3 组件编写规范]()
