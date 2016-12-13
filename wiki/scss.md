@@ -292,6 +292,28 @@
     }
   ```
 
+  #### 通用样式 前缀命名 以 rc 开头 如 `rc-header`,`rc-dialog`  
+  > 组件内 样式命名 可简写 如 `rc-dialog-header` 可简写 为 `rc-d-header` 但是最后具体描述的 不可简写     
+  
+  ```scss
+  /* good  */
+  .rc-dialog{
+      .rc-d-header{
+          .rc-d-h-title{
+              
+          }
+      }
+
+  }
+
+  /* bad */
+  .rc-dialog{
+      .rc-d-h{
+          ...
+      }
+  }
+  ``` 
+
   #### 目录/文件命名
 
   * 全部采用小写方式，以`.` 分隔   
