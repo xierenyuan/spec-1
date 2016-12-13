@@ -297,9 +297,9 @@
   
   ```scss
   /* good  */
-  .rc-dialog{
-      .rc-d-header{
-          .rc-d-h-title{
+  .rc-dialog {
+      .rc-d-header {
+          .rc-d-h-title {
               
           }
       }
@@ -307,8 +307,8 @@
   }
 
   /* bad */
-  .rc-dialog{
-      .rc-d-h{
+  .rc-dialog {
+      .rc-d-h {
           ...
       }
   }
